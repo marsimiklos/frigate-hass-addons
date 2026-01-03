@@ -10,15 +10,15 @@ server {
         proxy_pass {{ .server }};
         proxy_set_header X-Ingress-Path {{ .entry }};
 
-        # Auth Secret injection if configured
         {{ if .auth_secret }}
         proxy_set_header X-Proxy-Secret "{{ .auth_secret }}";
         {{ end }}
 
-        # REMOVED: Ne küldjünk Remote-User fejlécet, mert az bekapcsolja a Frigate 
-        # kötelező hitelesítését, felülírva az 'auth: false' beállítást.
-        # proxy_set_header Remote-User anonymous;
-        # proxy_set_header Remote-Role admin;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Authorization "";
 
         {{ if .proxy_pass_host }}
           proxy_set_header Host $http_host;
