@@ -3,7 +3,7 @@ version: 1.6
 panel_icon: "mdi:cctv"
 panel_title: Frigate
 slug: frigate-proxy
-description: Proxy addon for Frigate
+description: Proxy addon for Frigate with Auth Secret support
 url: "https://github.com/blakeblackshear/frigate"
 startup: application
 boot: auto
@@ -26,10 +26,12 @@ full_access: false
 environment: {}
 options:
   server: "http://frigate.local:5000"
+  auth_secret: ""
   proxy_pass_host: true
   proxy_pass_real_ip: true
 schema:
   server: "match(^https?://.+:\\d+$)"
+  auth_secret: str
   proxy_pass_host: bool
   proxy_pass_real_ip: bool
 services: []

@@ -10,6 +10,15 @@ server {
         proxy_pass {{ .server }};
         proxy_set_header X-Ingress-Path {{ .entry }};
 
+        # Auth Secret injection if configured
+        {{ if .auth_secret }}
+        proxy_set_header X-Proxy-Secret "{{ .auth_secret }}";
+        {{ end }}
+
+        # Default role for Ingress access (Viewer)
+        proxy_set_header Remote-User anonymous;
+        proxy_set_header Remote-Role viewer;
+
         {{ if .proxy_pass_host }}
           proxy_set_header Host $http_host;
         {{ end }}
