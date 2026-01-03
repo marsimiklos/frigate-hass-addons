@@ -14,13 +14,14 @@ server {
         proxy_set_header X-Proxy-Secret "{{ .auth_secret }}";
         {{ end }}
 
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header X-Forwarded-Proto $scheme;
+        # A proxy_params.conf mar tartalmazza a standard beallitasokat (Websocket, Proto).
+        # Csak a specifikus javitas marad itt a Login loop ellen:
         proxy_set_header Authorization "";
 
         {{ if .proxy_pass_host }}
-          proxy_set_header Host $http_host;
+          # A $host változó használata ajánlottabb a $http_host helyett, 
+          # mert kezeli az esetlegesen hiányzó kliens fejléceket is.
+          proxy_set_header Host $host;
         {{ end }}
         {{ if .proxy_pass_real_ip }}
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
