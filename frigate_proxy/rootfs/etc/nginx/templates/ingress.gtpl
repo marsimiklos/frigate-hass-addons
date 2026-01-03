@@ -15,9 +15,10 @@ server {
         proxy_set_header X-Proxy-Secret "{{ .auth_secret }}";
         {{ end }}
 
-        # Default role for Ingress access (Viewer)
-        proxy_set_header Remote-User anonymous;
-        proxy_set_header Remote-Role viewer;
+        # REMOVED: Ne küldjünk Remote-User fejlécet, mert az bekapcsolja a Frigate 
+        # kötelező hitelesítését, felülírva az 'auth: false' beállítást.
+        # proxy_set_header Remote-User anonymous;
+        # proxy_set_header Remote-Role admin;
 
         {{ if .proxy_pass_host }}
           proxy_set_header Host $http_host;
